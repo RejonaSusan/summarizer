@@ -1,6 +1,2 @@
 streamlit
-<<<<<<< HEAD
 transformers
-=======
-transformer
->>>>>>> c48e458c9b952ac1ab0964ca6a8d09506c4fc660
