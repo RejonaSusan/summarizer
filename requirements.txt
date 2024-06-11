@@ -1,3 +1,2 @@
 streamlit
-transformer
-tensorflow
+transformers
