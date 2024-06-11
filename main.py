@@ -1,6 +1,27 @@
 #import streamlit as st
 from transformers import pipeline
 
+summarizer = pipeline("summarization", model="facebook/bart-large-cnn")
+qa_model = pipeline("question-answering", model="distilbert-base-cased-distilled-squad")
 
-summarizer = pipeline("summarization")
-summarizer("Bali is predominantly a Hindu country. Bali is known for its elaborate, traditional dancing. The dancing is inspired by its Hindi beliefs. Most of the dancing portrays tales of good versus evil. To watch the dancing is a breathtaking experience. Lombok has some impressive points of interest – the majestic Gunung Rinjani is an active volcano. It is the second highest peak in Indonesia. Art is a Balinese passion. Batik paintings and carved statues make popular souvenirs. Artists can be seen whittling and painting on the streets, particularly in Ubud. It is easy to appreciate each island as an attractive tourist destination. Majestic scenery; rich culture; white sands and warm, azure waters draw visitors like magnets every year. Snorkelling and diving around the nearby Gili Islands is magnificent. Marine fish, starfish, turtles and coral reef are present in abundance. Bali and Lombok are part of the Indonesian archipelago. Bali has some spectacular temples. The most significant is the Mother Temple, Besakih. The inhabitants of Lombok are mostly Muslim with a Hindu minority. Lombok remains the most understated of the two islands. Lombok has several temples worthy of a visit, though they are less prolific. Bali and Lombok are neighbouring islands.", min_length=5, max_length=20)             
+st.title("Document Summarizer and Q&A")
+
+uploaded_file = st.file_uploader("Choose a file", type=["txt"])
+
+if uploaded_file is not None:
+
+    document = uploaded_file.read().decode("utf-8")
+    
+    st.subheader("Original Document")
+    st.write(document)
+    
+    st.subheader("Summary")
+    summary = summarizer(document, max_length=150, min_length=30, do_sample=False)
+    st.write(summary[0]['summary_text'])
+    
+    st.subheader("Ask a question about the document")
+    question = st.text_input("Enter your question:")
+    if question:
+        answer = qa_model(question=question, context=document)
+        st.write("Answer:", answer['answer'])
+
