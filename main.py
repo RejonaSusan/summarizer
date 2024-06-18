@@ -1,4 +1,4 @@
-#import streamlit as st
+import streamlit as st
 from transformers import pipeline
 
 summarizer = pipeline("summarization", model="facebook/bart-large-cnn")
